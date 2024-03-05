@@ -14,6 +14,9 @@ SRCS = 	ft_args.c \
 		main.c \
 		pipex.c
 
+INCLUDES =	ft_printf.h \
+			pipex.h 
+
 OBJS =	$(SRCS:%.c=%.o)
 
 CC = cc
@@ -32,5 +35,8 @@ fclean : clean
 		rm ./pipex
 
 re : fclean all
+
+%.o : %.c $(INCLUDES)
+	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY = all clean fclean re 
