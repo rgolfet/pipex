@@ -11,6 +11,7 @@ SRCS = 	ft_args.c \
 		ft_strlen.c \
 		ft_strncmp.c \
 		ft_uargs.c \
+		ft_path.c \
 		main.c \
 		pipex.c
 

@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 22:03:24 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/06 14:35:03 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/06 17:23:13 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*get_arg(char *cmd_arg, char **save_cmd_arg);
 void	ft_free_arg(char **argument);
 int		ft_blank_command_error(char *argv, char *argv1);
 char	**ft_fill_av(char *path_cmd, char *cmd_arg);
-char	*ft_find_path(char **envp);
 int		ft_access(char *str);
 char	*ft_path(char *path, char *cmd);
 int		ft_child_1(char *infile, char *cmd, char **envp, int *pipe_fds);
