@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 22:02:46 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/05 22:16:22 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/06 15:48:54 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,31 @@ char	*ft_find_path(char **envp)
 	return (NULL);
 }
 
+char	*ft_create_path_command(char *path, char *cmd)
+{
+	char	*str;
+	char	*cpy;
+
+	str = ft_strjoin(path, "/");
+	cpy = str;
+	str = ft_strjoin(str, cmd);
+	free (cpy);
+	return (str);
+}
+
+int	ft_access(char *str)
+{
+	if (str == NULL)
+		return (-1);
+	if (access(str, F_OK) == 0)
+	{
+		if (access(str, X_OK) == 0)
+			return (0);
+		return (ft_printf("%s : permission denied", str), -1);
+	}
+	return (1);
+}
+
 char	*ft_path(char *path, char *cmd)
 {
 	size_t		i;
@@ -62,6 +87,10 @@ char	*ft_path(char *path, char *cmd)
 
 	i = 0;
 	j = 0;
+	if (cmd[0] == '\0')
+		return (NULL);
+	if (ft_access(cmd) == 0)
+		return (cmd);
 	while (path[i])
 	{
 		while (path[i] && path[i] != ':')
@@ -69,12 +98,12 @@ char	*ft_path(char *path, char *cmd)
 		if (path[i] == ':')
 		{
 			path[i] = '\0';
-			str = ft_strjoin(&path[j], "/");
-			str = ft_strjoin(str, cmd);
+			str = ft_create_path_command(&path[j], cmd);
 			if (ft_access(str) == -1)
-				return (NULL);
+				return (free(str), NULL);
 			if (ft_access(str) == 0)
 				return (str);
+			free(str);
 		}
 		i++;
 		j = i;
@@ -99,14 +128,15 @@ int	ft_child_1(char *infile, char *cmd, char **envp, int *pipe_fds)
 	cmd_arg = ft_find_cmd_arg(cmd);
 	cmd = ft_find_cmd(cmd);
 	path_cmd = ft_path(path, cmd);
+	free(cmd);
+	if (path_cmd == NULL)
+		return (ft_close3(pipe_fds[1], pipe_fds[0], fd_in), -1);
 	av = ft_fill_av(path_cmd, cmd_arg);
 	dup2(fd_in, 0);
 	dup2(pipe_fds[1], 1);
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	close(fd_in);
+	ft_close3(pipe_fds[1], pipe_fds[0], fd_in);
 	execve(av[0], av, envp);
-	return (0);
+	return (-1);
 }
 
 int	ft_child_2(char *outfile, char *cmd2, char **envp, int *pipe_fds)
@@ -127,12 +157,13 @@ int	ft_child_2(char *outfile, char *cmd2, char **envp, int *pipe_fds)
 	cmd_arg = ft_find_cmd_arg(cmd2);
 	cmd2 = ft_find_cmd(cmd2);
 	path_cmd = ft_path(path, cmd2);
+	free(cmd2);
+	if (path_cmd == NULL)
+		return (ft_close3(pipe_fds[1], pipe_fds[0], fd_out), -1);
 	av = ft_fill_av(path_cmd, cmd_arg);
 	dup2(fd_out, 1);
 	dup2(pipe_fds[0], 0);
-	close(pipe_fds[1]);
-	close(fd_out);
-	close(pipe_fds[0]);
+	ft_close3(pipe_fds[1], pipe_fds[0], fd_out);
 	execve(av[0], av, envp);
-	return (0);
+	return (-1);
 }

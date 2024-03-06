@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 22:03:24 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/05 22:14:46 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/06 14:35:03 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int		ft_access(char *str);
 char	*ft_path(char *path, char *cmd);
 int		ft_child_1(char *infile, char *cmd, char **envp, int *pipe_fds);
 int		ft_child_2(char *outfile, char *cmd2, char **envp, int *pipe_fds);
+void	ft_close3(int fd1, int fd2, int fd3);
 
 #endif

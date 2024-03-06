@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 22:08:21 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/05 22:16:51 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/06 14:56:45 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,9 @@ int	ft_blank_command_error(char *argv, char *argv1)
 	return (0);
 }
 
-int	ft_access(char *str)
+void	ft_close3(int fd1, int fd2, int fd3)
 {
-	if (str == NULL)
-		return (-1);
-	if (access(str, F_OK) == 0)
-	{
-		if (access(str, X_OK) == 0)
-			return (0);
-		return (ft_printf("%s : permission denied", str), -1);
-	}
-	return (1);
+	close(fd1);
+	close(fd2);
+	close(fd3);
 }
